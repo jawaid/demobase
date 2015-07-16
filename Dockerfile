@@ -22,7 +22,7 @@ RUN apt-get update  && \
                     make \
                     openssh-server \
                     openssh-client \
-                    gdb \
+#                    gdb= \
                     sudo \
                     git-core \
                     vim \
@@ -30,8 +30,8 @@ RUN apt-get update  && \
                     python-pip
                     python-software-properties && \
                     supervisor 
-#     wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
-#     dpkg -i ./gdb_7.4-2012.02-0ubuntu2_amd64.deb
+     wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
+     dpkg -i ./gdb_7.4-2012.02-0ubuntu2_amd64.deb
 
 # echo "================== Installing python requirements ====="
 RUN mkdir -p /home/shippable /src
