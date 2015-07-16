@@ -17,32 +17,31 @@ RUN apt-get update  && \
      echo "deb http://archive.ubuntu.com/ubuntu trusty main universe restricted multiverse" > /etc/apt/sources.list  && \
      apt-get install -yy g++-4.9 \
                     wget \
-                    curl \
+#                    curl \
                     texinfo \
-                    make \
-                    openssh-server \
-                    openssh-client \
-#                    gdb= \
+#                    make \
+#                    openssh-server \
+#                    openssh-client \
+#                    gdb \
                     sudo \
                     git-core \
-                    vim \
-                    htop \
-                    python-pip \
-                    python-software-properties \
-                    supervisor && \
-     wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
-     dpkg -i ./gdb_7.4-2012.02-0ubuntu2_amd64.deb
+#                    vim \
+#                    htop \
+                    python-pip
+#                    python-software-properties && \
+#                    supervisor
+#     wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
+#     dpkg -i ./gdb_7.4-2012.02-0ubuntu2_amd64.deb
 
 # echo "================== Installing python requirements ====="
-RUN mkdir -p /home/shippable /src
+RUN mkdir -p /home/shippable
 ADD . /home/shippable/appBase
 RUN pip install -r /home/shippable/appBase/requirements.txt  && \
 # echo "================= Installing Node ==================="
      add-apt-repository ppa:chris-lea/node.js  && \
      apt-get update  && \
      apt-get install -y nodejs  && \
-     cd /home/shippable/appBase && \
-     npm install -g && \
+     npm install -g grunt grunt-cli && \
 # echo "================== Adding empty known hosts file =============="
      mkdir -p /root/.ssh  && \
      touch /root/.ssh/known_hosts
