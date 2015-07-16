@@ -27,7 +27,7 @@ RUN apt-get update  && \
                     git-core \
                     vim \
                     htop \
-                    python-pip
+                    python-pip \
                     python-software-properties \
                     supervisor && \
      wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
