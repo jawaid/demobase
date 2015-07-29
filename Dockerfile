@@ -17,43 +17,46 @@ RUN apt-get update  && \
      echo "deb http://archive.ubuntu.com/ubuntu trusty main universe restricted multiverse" > /etc/apt/sources.list  && \
      apt-get install -yy g++-4.9 \
                     wget \
-#                    curl \
                     texinfo \
-#                    make \
-#                    openssh-server \
-#                    openssh-client \
-#                    gdb \
                     sudo \
                     git-core \
-#                    vim \
-#                    htop \
                     python-pip
-#                    python-software-properties && \
-#                    supervisor
-#     wget http://security.ubuntu.com/ubuntu/pool/main/g/gdb/gdb_7.4-2012.02-0ubuntu2_amd64.deb  && \
-#     dpkg -i ./gdb_7.4-2012.02-0ubuntu2_amd64.deb
 
 # echo "================== Installing python requirements ====="
 RUN mkdir -p /home/shippable
-ADD . /home/shippable/appBase
-RUN pip install -r /home/shippable/appBase/requirements.txt  && \
+ADD . /home/shippable/demobase
+RUN pip install -r /home/shippable/demobase/requirements.txt
 # echo "================= Installing Node ==================="
-     add-apt-repository ppa:chris-lea/node.js  && \
-     apt-get update  && \
-     apt-get install -y nodejs  && \
-     npm install -g grunt grunt-cli && \
+RUN add-apt-repository ppa:chris-lea/node.js
+RUN apt-get update
+RUN apt-get install -y nodejs
+RUN cd /home/shippable/demobase
+RUN npm install -g \
+  grunt \
+  grunt-cli \
+  body-parser@~1.12.0 \
+  cookie-parser@~1.3.4 \
+  cors@>2.7.1 \
+  debug@~2.1.1 \
+  express@~4.12.2 \
+  express-session@>1.11.2 \
+  method-override@>2.3.3 \
+  morgan@~1.5.1 \
+  request@~2.55.0 \
+  sync-request@2.0.1 \
+  winston@>1.0.1
 # echo "================== Adding empty known hosts file =============="
-     mkdir -p /root/.ssh  && \
-     touch /root/.ssh/known_hosts
+RUN mkdir -p /root/.ssh
+RUN touch /root/.ssh/known_hosts
 
 # echo "================== Disabling scrict host checking for ssh ====="
 ADD config /root/.ssh/config
 
 # echo "================= Adding gclould binaries ============"
-# RUN mkdir -p /opt/gcloud
-# ADD google-cloud-sdk /opt/gcloud/google-cloud-sdk
-# RUN cd /opt/gcloud/google-cloud-sdk && ./install.sh --usage-reporting=false --bash-completion=true --path-update=true
-# ENV PATH $PATH:/opt/gcloud/google-cloud-sdk/bin
-# RUN gcloud components update preview
+RUN mkdir -p /opt/gcloud
+ADD google-cloud-sdk /opt/gcloud/google-cloud-sdk
+RUN cd /opt/gcloud/google-cloud-sdk && ./install.sh --usage-reporting=false --bash-completion=true --path-update=true
+ENV PATH $PATH:/opt/gcloud/google-cloud-sdk/bin
+RUN gcloud components update preview
 
 RUN echo 'ALL ALL=(ALL) NOPASSWD:ALL' | tee -a /etc/sudoers
